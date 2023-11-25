@@ -1,0 +1,20 @@
+databases:
+  - name: knower
+    databaseName: knower
+    user: knower
+
+services:
+  - type: web
+    name: knower
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "gunicorn mysite.wsgi:application"
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: knower
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
