@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.auth.models import Group
 from django.core.exceptions import ValidationError
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
@@ -54,6 +54,7 @@ class UserAdmin(BaseUserAdmin):
     add_form = UserCreationForm
     form = UserUpdateForm
 
+    actions = ["make_inactivated", "make_activated"]
     list_display = [
         "email",
         "first_name",
@@ -80,6 +81,16 @@ class UserAdmin(BaseUserAdmin):
     filter_horizontal = []
     ordering = ["email"]
     search_fields = ["email"]
+
+    @admin.action(description="휴면 계정으로 전환하기")
+    def make_inactivated(self, request, queryset):
+        queryset.update(is_active=False)
+        self.message_user(request, f"해당 계정이 휴면 계정으로 전환되었습니다.", messages.SUCCESS)
+
+    @admin.action(description="활동 계정으로 전환하기")
+    def make_activated(self, request, queryset):
+        queryset.update(is_active=False)
+        self.message_user(request, f"해당 계정이 활동 계정으로 전환되었습니다.", messages.SUCCESS)
 
 
 admin.site.register(KnowerUser, UserAdmin)
