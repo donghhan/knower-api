@@ -43,7 +43,9 @@ PROJECT_APPS = [
     "users.apps.UsersConfig",
 ]
 
-THIRDPARTY_LIBRARIES = []
+THIRDPARTY_LIBRARIES = [
+    "rest_framework",
+]
 
 INSTALLED_APPS = THIRDPARTY_LIBRARIES + PROJECT_APPS + BUILTIN_APPS
 
@@ -129,3 +131,6 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Custom User
+AUTH_USER_MODEL = "users.KnowerUser"
