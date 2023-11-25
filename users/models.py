@@ -37,7 +37,7 @@ class KnowerUser(AbstractBaseUser):
     first_name = models.CharField(verbose_name="이름", max_length=30)
     last_name = models.CharField(verbose_name="성", max_length=30)
     mobile_number = models.CharField(verbose_name="휴대전화번호", max_length=30)
-    is_active = models.BooleanField(default=True, verbose_name="비휴면 여부")
+    is_active = models.BooleanField(default=True, verbose_name="활동 여부")
     is_admin = models.BooleanField(default=False, verbose_name="어드민")
 
     objects = KnowerUserManager()
