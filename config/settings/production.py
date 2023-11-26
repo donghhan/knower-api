@@ -3,7 +3,6 @@ import dj_database_url
 from .base import *
 
 environ.Env.read_env(os.path.join(BASE_DIR, ".env.production"))
-SECRET_KEY = env("SECRET_KEY_PRODUCTION")
 
 DEBUG = False
 
