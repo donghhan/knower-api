@@ -2,12 +2,12 @@ import os
 from .base import *
 
 environ.Env.read_env(os.path.join(BASE_DIR, ".env.development"))
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY_DEVELOPMENT")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
 
 # Middleware
 MIDDLEWARE = [
