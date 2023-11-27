@@ -2,11 +2,13 @@ databases:
   - name: knower
     databaseName: knower
     user: knower
+    region: singapore
 
 services:
   - type: web
     name: knower
     runtime: python
+    region: singapore
     buildCommand: "./build.sh"
     startCommand: "gunicorn config.wsgi:application"
     envVars:
