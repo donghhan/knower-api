@@ -3,20 +3,16 @@ import environ
 import dj_database_url
 from pathlib import Path
 
-
 env = environ.Env()
+environ.Env.read_env()
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-if "RENDER" in os.environ:
-    DEBUG = True
-else:
-    DEBUG = False
+DEBUG = "RENDER" not in os.environ
 
-SECRET_KEY = os.environ.get(
-    "SECRET_KEY", default="django-insecure-XtoQ6U5K5iiSzM9ardMKv28MMcF2maLQ"
-)
+SECRET_KEY = env("SECRET_KEY")
 
 # Allowed Host
 ALLOWED_HOSTS = []
