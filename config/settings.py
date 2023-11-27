@@ -9,7 +9,7 @@ env = environ.Env()
 BASE_DIR = Path(__file__).resolve().parent.parent
 environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-DEBUG = "RENDER" not in os.environ
+DEBUG = True
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY", default="django-insecure-XtoQ6U5K5iiSzM9ardMKv28MMcF2maLQ"
