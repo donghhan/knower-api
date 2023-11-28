@@ -1,21 +1,27 @@
-from django.db import models
+from django.db import models, transaction
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class KnowerUserManager(BaseUserManager):
-    def create_user(self, email, first_name, last_name, mobile_number, password=None):
+    def create_user(
+        self, email, first_name, last_name, mobile_number, password=None, **extra_fields
+    ):
         if not email or not first_name or not last_name or not mobile_number:
-            raise ValueError("You missed required value.")
-
-        user = self.model(
-            email=self.normalize_email(email),
-            first_name=first_name,
-            last_name=last_name,
-            mobile_number=mobile_number,
-        )
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
+            raise ValueError("필수 요소가 빠졌습니다(KnowerUserManager 에러)")
+        try:
+            with transaction.atomic():
+                user = self.model(
+                    email=email,
+                    first_name=first_name,
+                    last_name=last_name,
+                    mobile_number=mobile_number,
+                    **extra_fields
+                )
+                user.set_password(password)
+                user.save(using=self._db)
+                return user
+        except:
+            raise ValueError("Something went wrong")
 
     def create_superuser(
         self, email, first_name, last_name, mobile_number, password=None

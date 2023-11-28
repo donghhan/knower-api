@@ -1,5 +1,6 @@
 import os
 import environ
+from datetime import timedelta
 import dj_database_url
 from pathlib import Path
 
@@ -36,6 +37,7 @@ PROJECT_APPS = [
 
 THIRDPARTY_LIBRARIES = [
     "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 INSTALLED_APPS = THIRDPARTY_LIBRARIES + PROJECT_APPS + BUILTIN_APPS
@@ -91,6 +93,27 @@ else:
         )
     }
 
+# Rest Framework
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    )
+}
+
+# JWT
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": False,
+    "ALGORITHM": env("SIMPLE_JWT_ALGORITHM"),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "TOKEN_TYPE_CLAIM": "token_type",
+    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
