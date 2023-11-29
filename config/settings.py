@@ -17,7 +17,7 @@ if DEBUG:
     ALLOWED_HOSTS = []
 else:
     ALLOWED_HOSTS = [].append(os.environ.get("ALLOWED_HOSTS"))
-    CSRF_TRUSTED_ORIGINS = [].os.environ.get("CSRF_TRUSTED_ORIGINS")
+    CSRF_TRUSTED_ORIGINS = [].append(os.environ.get("CSRF_TRUSTED_ORIGINS"))
 
 
 BUILTIN_APPS = [
