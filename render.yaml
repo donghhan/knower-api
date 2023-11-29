@@ -6,7 +6,7 @@ databases:
 
 services:
   - type: web
-    name: knower
+    name: knower-api
     runtime: python
     region: singapore
     buildCommand: "./build.sh"
