@@ -6,18 +6,17 @@ from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-DEBUG = "RENDER" not in os.environ
+DEBUG = os.environ.get("DEBUG", "") != "False"
 
 SECRET_KEY = os.environ.get(
     "SECRET_KEY", default="django-insecure-naYx2i1YAC3Poaz340PDdOBZBxxI3nxH"
 )
 
 # Allowed Host
-ALLOWED_HOSTS = []
-
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+if DEBUG:
+    ALLOWED_HOSTS = []
+else:
+    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 BUILTIN_APPS = [
