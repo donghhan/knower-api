@@ -12,12 +12,12 @@ SECRET_KEY = os.environ.get(
     "SECRET_KEY", default="django-insecure-naYx2i1YAC3Poaz340PDdOBZBxxI3nxH"
 )
 
-# Allowed Host
-if DEBUG:
-    ALLOWED_HOSTS = []
-else:
-    ALLOWED_HOSTS = [].append(os.environ.get("ALLOWED_HOSTS"))
-    CSRF_TRUSTED_ORIGINS = [].append(os.environ.get("CSRF_TRUSTED_ORIGINS"))
+ALLOWED_HOSTS = []
+CSRF_TRUSTED_ORIGINS = []
+
+if not DEBUG:
+    ALLOWED_HOSTS.append(os.environ.get("ALLOWED_HOSTS"))
+    CSRF_TRUSTED_ORIGINS.append(os.environ.get("CSRF_TRUSTED_ORIGINS"))
 
 
 BUILTIN_APPS = [
