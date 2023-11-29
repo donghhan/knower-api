@@ -1,25 +1,17 @@
 import os
-import environ
 from datetime import timedelta
 import dj_database_url
 from pathlib import Path
 
-env = environ.Env()
-environ.Env.read_env()
-
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
-DEBUG = "RENDER" not in os.environ
+DEBUG = os.environ.get("DEBUG", "False") == "True"
 
-SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # Allowed Host
-ALLOWED_HOSTS = []
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
+ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
 
 
 BUILTIN_APPS = [
@@ -89,7 +81,7 @@ if DEBUG:
 else:
     DATABASES = {
         "default": dj_database_url.config(
-            default=env("DATABASE_URL"),
+            default=os.environ.get("DATABASE_URL"),
             conn_max_age=600,
         )
     }
