@@ -16,7 +16,8 @@ SECRET_KEY = os.environ.get(
 if DEBUG:
     ALLOWED_HOSTS = []
 else:
-    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+    ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS")
+    CSRF_TRUSTED_ORIGINS = os.environ.get("CSRF_TRUSTED_ORIGINS")
 
 
 BUILTIN_APPS = [
