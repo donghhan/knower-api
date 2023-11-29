@@ -1,5 +1,5 @@
-from rest_framework import serializers
 from django.contrib.auth.hashers import make_password
+from rest_framework import serializers
 from .models import KnowerUser
 
 
@@ -56,14 +56,17 @@ class CreateAccountSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        min_length=8,
+        max_length=16,
+        required=True,
+        write_only=True,
+        style={"input_type": "password"},
+    )
+
     class Meta:
         model = KnowerUser
         fields = [
             "email",
             "password",
-            "first_name",
-            "last_name",
-            "mobile_number",
-            "confirm_password",
         ]
-        extra_kwargs = {"password": {"write_only": True}}

@@ -38,6 +38,7 @@ PROJECT_APPS = [
 THIRDPARTY_LIBRARIES = [
     "rest_framework",
     "rest_framework_simplejwt",
+    "rest_framework_simplejwt.token_blacklist",
 ]
 
 INSTALLED_APPS = THIRDPARTY_LIBRARIES + PROJECT_APPS + BUILTIN_APPS
@@ -103,16 +104,17 @@ REST_FRAMEWORK = {
 # JWT
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
-    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-    "ROTATE_REFRESH_TOKENS": False,
-    "BLACKLIST_AFTER_ROTATION": False,
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=30),
+    "ROTATE_REFRESH_TOKENS": True,
+    "BLACKLIST_AFTER_ROTATION": True,
     "UPDATE_LAST_LOGIN": False,
-    "ALGORITHM": env("SIMPLE_JWT_ALGORITHM"),
+    "ALGORITHM": os.environ.get("SIMPLE_JWT_ALGORITHM"),
+    "VERIFYING_KEY": None,
     "AUTH_HEADER_TYPES": ("Bearer",),
     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
     "TOKEN_TYPE_CLAIM": "token_type",
-    "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
+    "TOKEN_USER_CLASS": "users.KnowerUser",
 }
 
 # Password validation
