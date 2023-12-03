@@ -38,6 +38,7 @@ THIRDPARTY_LIBRARIES = [
     "rest_framework_simplejwt.token_blacklist",
 ]
 
+
 INSTALLED_APPS = THIRDPARTY_LIBRARIES + PROJECT_APPS + BUILTIN_APPS
 
 

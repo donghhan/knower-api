@@ -3,53 +3,42 @@ from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
 
 class KnowerUserManager(BaseUserManager):
-    def create_user(
-        self, email, first_name, last_name, mobile_number, password=None, **extra_fields
-    ):
-        if not email or not first_name or not last_name or not mobile_number:
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
             raise ValueError("필수 요소가 빠졌습니다(KnowerUserManager 에러)")
         try:
             with transaction.atomic():
-                user = self.model(
-                    email=email,
-                    first_name=first_name,
-                    last_name=last_name,
-                    mobile_number=mobile_number,
-                    **extra_fields
-                )
+                user = self.model(email=email, **extra_fields)
                 user.set_password(password)
                 user.save(using=self._db)
                 return user
-        except:
-            raise ValueError("Something went wrong")
+        except Exception as e:
+            raise e
 
-    def create_superuser(
-        self, email, first_name, last_name, mobile_number, password=None
-    ):
-        admin_user = self.create_user(
-            email,
-            password=password,
-            first_name=first_name,
-            last_name=last_name,
-            mobile_number=mobile_number,
-        )
-        admin_user.is_admin = True
-        admin_user.save(using=self._db)
-        return admin_user
+    def create_superuser(self, email, password=None, **extra_fields):
+        extra_fields.setdefault("is_admin", True)
+        extra_fields.setdefault("is_superuser", True)
+
+        if extra_fields.get("is_admin") is not True:
+            raise ValueError("Error: is_staff sets to False.")
+        if extra_fields.get("is_superuser") is not True:
+            raise ValueError("Error: is_superuser sets to False.")
+
+        return self.create_user(email, password, **extra_fields)
 
 
 class KnowerUser(AbstractBaseUser):
     email = models.EmailField(verbose_name="E-mail", unique=True, max_length=64)
-    first_name = models.CharField(verbose_name="이름", max_length=30)
-    last_name = models.CharField(verbose_name="성", max_length=30)
-    mobile_number = models.CharField(verbose_name="휴대전화번호", max_length=30)
+    first_name = models.CharField(verbose_name="이름", max_length=30, blank=True)
+    last_name = models.CharField(verbose_name="성", max_length=30, blank=True)
+    mobile_number = models.CharField(verbose_name="휴대전화번호", max_length=30, blank=True)
     is_active = models.BooleanField(default=True, verbose_name="활동 여부")
+    is_superuser = models.BooleanField(default=False, verbose_name="어드민 ")
     is_admin = models.BooleanField(default=False, verbose_name="어드민")
 
     objects = KnowerUserManager()
 
     USERNAME_FIELD = "email"
-    REQUIRED_FIELDS = ["first_name", "last_name", "mobile_number"]
 
     def __str__(self):
         return str(self.email)
